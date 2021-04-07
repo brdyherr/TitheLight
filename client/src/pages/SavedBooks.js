@@ -69,7 +69,7 @@ const SavedBooks = () => {
     <>
       <Jumbotron fluid className='text-light bg-dark'>
         <Container>
-          <h1>Viewing saved books!</h1>
+          <h1>Viewing Tithe and Offerings!</h1>
         </Container>
       </Jumbotron>
       <Container>
@@ -88,7 +88,7 @@ const SavedBooks = () => {
                   <p className='small'>Authors: {book.authors}</p>
                   <Card.Text>{book.description}</Card.Text>
                   <Button className='btn-block btn-danger' onClick={() => handleDeleteBook(book.bookId)}>
-                    Delete this Book!
+                    Delete this donation!
                   </Button>
                 </Card.Body>
               </Card>

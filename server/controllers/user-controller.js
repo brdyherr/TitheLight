@@ -1,5 +1,5 @@
 // import user model
-const { User } = require('../models');
+const { User, Tithe } = require('../models');
 // import sign token function from auth
 const { signToken } = require('../utils/auth');
 
@@ -70,4 +70,18 @@ module.exports = {
     }
     return res.json(updatedUser);
   },
+
+  async saveTithe({ body }, res) {
+    console.log("---- LOGGING THE TITHE REQUEST ---"); 
+    console.log(body);
+    /*const tithe = await Tithe.create(body);
+
+    if (!tithe) {
+      return res.status(400).json({ message: 'Something is wrong!' });
+    }
+  
+    res.json(tithe);*/ 
+    res.json({});
+    
+  }
 };
