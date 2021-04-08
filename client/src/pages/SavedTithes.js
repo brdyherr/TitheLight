@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Jumbotron, Container, CardColumns, Card, Button } from 'react-bootstrap';
+import { Jumbotron, Container, CardColumns, Card, Button, Modal } from 'react-bootstrap';
 
 import { getMe, deleteTithe } from '../utils/API';
 import Auth from '../utils/auth';
+import AddTitheForm from '../components/AddTitheForm';
 
 const SavedTithes = () => {
   const [userData, setUserData] = useState({});
+  const [showModal, setShowModal] = useState(false);
+
 
   // use this to determine if `useEffect()` hook needs to run again
   const userDataLength = Object.keys(userData).length;
@@ -33,6 +36,8 @@ const SavedTithes = () => {
         console.error(err);
       }
     };
+
+    
 
     getUserData();
   }, [userDataLength]);
@@ -78,6 +83,9 @@ const SavedTithes = () => {
             ? `Viewing ${userData.tithes.length} saved ${userData.tithes.length === 1 ? 'tithe' : 'tithes'}:`
             : 'You have no saved tithes!'}
         </h2>
+        <h3>
+        <Button onClick={() => setShowModal(true)}>Add Tithe</Button>
+          </h3> 
         <CardColumns>
           {userData.tithes.map((tithe) => {
             return (
@@ -94,6 +102,20 @@ const SavedTithes = () => {
             );
           })}
         </CardColumns>
+        <Modal
+         size='lg'
+         show={showModal}
+         onHide={() => setShowModal(false)}
+         > 
+        <Modal.Header closeButton>
+            <Modal.Title id='add-tithe-modal'>
+               Add Tithe
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+               <AddTitheForm handleModalClose={() => setShowModal(false)} />
+          </Modal.Body>
+          </Modal>
       </Container>
     </>
   );
