@@ -43,8 +43,8 @@ export const saveBook = (bookData, token) => {
 // TODO
 // FINISH THIS CLASS and other methods like PUT and DELETE FOR a TITHE! 
 // save book data for a logged in user
-export const savedTithe = (titheData, token) => {
-  return fetch(`/api/users/tithe`, {
+export const saveTithe = (titheData, token) => {
+  return fetch(`/api/users/tithes`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',

@@ -24,7 +24,7 @@ router.route('/books/:bookId').delete(authMiddleware, deleteBook);
 
 router.route('/tithes/:titheId').delete(authMiddleware, deleteTithe);
 
-router.route('/tithes').put(authMiddleware, updateTithe);
+router.route('/tithes').put(authMiddleware, saveTithe);
 
 router.route('/tithe').post(saveTithe);
 
