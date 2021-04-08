@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Jumbotron, Container, CardColumns, Card, Button, Modal } from 'react-bootstrap';
+import { Jumbotron, Container, CardColumns, Card, Button, Modal, Form } from 'react-bootstrap';
 
 import { getMe, deleteTithe } from '../utils/API';
 import Auth from '../utils/auth';
@@ -8,7 +8,7 @@ import AddTitheForm from '../components/AddTitheForm';
 const SavedTithes = () => {
   const [userData, setUserData] = useState({});
   const [showModal, setShowModal] = useState(false);
-
+  const [updatedTithe, setUpdatedTithe] = useState({});
 
   // use this to determine if `useEffect()` hook needs to run again
   const userDataLength = Object.keys(userData).length;
@@ -65,6 +65,12 @@ const SavedTithes = () => {
     }
   };
 
+
+  
+  const handleUpdate = () => {
+    console.log("UPDATING");
+    console.log(updatedTithe); 
+  };
   // if data isn't here yet, say so
   if (!userDataLength) {
     return <h2>LOADING...</h2>;
@@ -91,11 +97,22 @@ const SavedTithes = () => {
             return (
               <Card key={tithe._id} border='dark'>
                 <Card.Body>
+
                   <Card.Title>Amount Given:</Card.Title>
-                  <p className='small'>${tithe.amount}</p>
+                  <Form.Control className='small'
+                  name='searchInput'
+                  value={tithe.amount}
+                  type='number'
+                  size='lg'
+                  onChange = {(e) => setUpdatedTithe({titheId: tithe._id, date: tithe.date, amount: e.target.value})}
+                  placeholder='Search for a donation'>
+                  </Form.Control>
                   <Card.Text>Given on: {tithe.date}</Card.Text>
-                  <Button className='btn-block btn-danger' onClick={() => handleDeleteTithe(tithe.titheId)}>
+                  <Button className='btn-block btn-danger' onClick={() => handleDeleteTithe(tithe._id)}>
                     Delete this donation!
+                  </Button>
+                  <Button className='btn-block btn-warning' onClick={() => handleUpdate()}>
+                    Update this donation!
                   </Button>
                 </Card.Body>
               </Card>
