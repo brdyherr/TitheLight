@@ -58,6 +58,43 @@ module.exports = {
       return res.status(400).json(err);
     }
   },
+
+  async saveTithe({ user, body }, res) {
+    console.log(user);
+    try {
+      const updatedUser = await User.findOneAndUpdate(
+        { _id: user._id },
+        { $addToSet: { tithes: body } },
+        { new: true, runValidators: true }
+      );
+      return res.json(updatedUser);
+    } catch (err) {
+      console.log(err);
+      return res.status(400).json(err);
+    }
+  },
+  
+  async updateTithe({ user, body }, res) {
+    console.log(user);
+    try {
+      const updatedUserDeleted = await User.findOneAndUpdate(
+        { _id: user._id },
+        { $pull: { savedBooks: { bookId: params.bookId } } },
+        { new: true }
+      );
+      const updatedUser = await User.findOneAndUpdate(
+        { _id: user._id },
+        { $addToSet: { tithes: body } },
+        { new: true, runValidators: true }
+      );
+      return res.json(updatedUser);
+      
+    } catch (err) {
+      console.log(err);
+      return res.status(400).json(err);
+    }
+  },
+
   // remove a book from `savedBooks`
   async deleteBook({ user, params }, res) {
     const updatedUser = await User.findOneAndUpdate(
@@ -71,17 +108,15 @@ module.exports = {
     return res.json(updatedUser);
   },
 
-  async saveTithe({ body }, res) {
-    console.log("---- LOGGING THE TITHE REQUEST ---"); 
-    console.log(body);
-    /*const tithe = await Tithe.create(body);
-
-    if (!tithe) {
-      return res.status(400).json({ message: 'Something is wrong!' });
+  async deleteTithe({ user, params }, res) {
+    const updatedUser = await User.findOneAndUpdate(
+      { _id: user._id },
+      { $pull: { tithes: { _id: params.titheId } } },
+      { new: true }
+    );
+    if (!updatedUser) {
+      return res.status(404).json({ message: "Couldn't find user with this id!" });
     }
-  
-    res.json(tithe);*/ 
-    res.json({});
-    
+    return res.json(updatedUser);
   }
 };

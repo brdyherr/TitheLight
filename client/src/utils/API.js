@@ -40,9 +40,33 @@ export const saveBook = (bookData, token) => {
   });
 };
 
+// TODO
+// FINISH THIS CLASS and other methods like PUT and DELETE FOR a TITHE! 
+// save book data for a logged in user
+export const savedTithe = (titheData, token) => {
+  return fetch(`/api/users/tithe`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(titheData),
+  });
+};
+
+
 // remove saved book data for a logged in user
 export const deleteBook = (bookId, token) => {
   return fetch(`/api/users/books/${bookId}`, {
+    method: 'DELETE',
+    headers: {
+      authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+export const deleteTithe = (titheId, token) => {
+  return fetch(`/api/users/tithes/${titheId}`, {
     method: 'DELETE',
     headers: {
       authorization: `Bearer ${token}`,
