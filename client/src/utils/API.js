@@ -74,6 +74,16 @@ export const deleteTithe = (titheId, token) => {
   });
 };
 
+export const updateTithe = (titheData, token) => {
+  return fetch(`/api/users/tithes-update`, {
+    method: 'POST',
+    headers: {
+      authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(titheData)
+  });
+};
+
 // make a search to google books api
 // https://www.googleapis.com/books/v1/volumes?q=harry+potter
 export const searchGoogleBooks = (query) => {

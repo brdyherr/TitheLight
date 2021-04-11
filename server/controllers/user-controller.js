@@ -76,19 +76,14 @@ module.exports = {
   
   async updateTithe({ user, body }, res) {
     console.log(user);
+    console.log(body);
     try {
-      const updatedUserDeleted = await User.findOneAndUpdate(
-        { _id: user._id },
-        { $pull: { savedBooks: { bookId: params.bookId } } },
-        { new: true }
-      );
       const updatedUser = await User.findOneAndUpdate(
         { _id: user._id },
         { $addToSet: { tithes: body } },
         { new: true, runValidators: true }
       );
       return res.json(updatedUser);
-      
     } catch (err) {
       console.log(err);
       return res.status(400).json(err);

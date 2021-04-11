@@ -23,6 +23,7 @@ router.route('/me').get(authMiddleware, getSingleUser);
 router.route('/books/:bookId').delete(authMiddleware, deleteBook);
 
 router.route('/tithes/:titheId').delete(authMiddleware, deleteTithe);
+router.route('/tithes-update').post(authMiddleware, updateTithe);
 
 router.route('/tithes').put(authMiddleware, saveTithe);
 
