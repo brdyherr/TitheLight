@@ -78,11 +78,25 @@ module.exports = {
     console.log(user);
     console.log(body);
     try {
+
+      for (const t in body.tithes){
+        const updatedUserDeleted = await User.findOneAndUpdate(
+          { _id: user._id },
+          { $pull: { tithes: { _id: t._id } } },
+          { new: true }
+        );
+      }
+  
+
       const updatedUser = await User.findOneAndUpdate(
         { _id: user._id },
-        { $addToSet: { tithes: body } },
+        { $addToSet: { tithes: body.tithes } },
         { new: true, runValidators: true }
       );
+          
+      if (!updatedUser) {
+        return res.status(404).json({ message: "Couldn't find user with this id!" });
+      }
       return res.json(updatedUser);
     } catch (err) {
       console.log(err);

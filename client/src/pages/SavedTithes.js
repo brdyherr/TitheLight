@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Jumbotron, Container, CardColumns, Card, Button, Modal, Form } from 'react-bootstrap';
 
-import { getMe, deleteTithe, saveTithe} from '../utils/API';
+import { getMe, deleteTithe } from '../utils/API';
 import Auth from '../utils/auth';
 import AddTitheForm from '../components/AddTitheForm';
 
@@ -12,9 +12,7 @@ const SavedTithes = () => {
 
   // use this to determine if `useEffect()` hook needs to run again
   const userDataLength = Object.keys(userData).length;
-  console.log("Length is ", userDataLength);
-
-
+  console.log(userData);
 
   useEffect(() => {
     const getUserData = async () => {
@@ -69,45 +67,9 @@ const SavedTithes = () => {
 
 
   
-  const handleUpdate = async () => {
+  const handleUpdate = () => {
     console.log("UPDATING");
     console.log(updatedTithe); 
-    console.log(userData); 
-         // if data isn't here yet, say so
-         if (!updatedTithe) {
-          return; 
-        }
-    let existingTithes = userData.tithes;
-    existingTithes.map(x => {
-       if (updatedTithe._id == x._id) {
-          x.amount = updatedTithe.amount; 
-          return x;   
-       }else {
-         return x; 
-       }
-    });
-    userData.tithes = existingTithes; 
-    const token = Auth.loggedIn() ? Auth.getToken() : null;
-
-    if (!token) {
-      return false;
-    }
-
- 
-
-    try {
-      const response = await saveTithe(userData, token);
-
-      if (!response.ok) {
-        throw new Error('something went wrong!');
-      }
-
-      const updatedUser = await response.json();
-      setUserData(updatedUser);
-    
-    } catch (err) {
-      console.error(err);
-    }
   };
   // if data isn't here yet, say so
   if (!userDataLength) {
@@ -131,7 +93,7 @@ const SavedTithes = () => {
         <Button onClick={() => setShowModal(true)}>Add Tithe</Button>
           </h3> 
         <CardColumns>
-          {userData.tithes.map((tithe) => {
+          {userData.tithes.filter(tithe => tithe != null).map((tithe) => {
             return (
               <Card key={tithe._id} border='dark'>
                 <Card.Body>
