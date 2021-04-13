@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Jumbotron, Container, CardColumns, Card, Button, Modal, Form } from 'react-bootstrap';
-
-import { getMe, deleteTithe } from '../utils/API';
+// setUpdatedTithe({titheId: tithe._id, date: tithe.date, amount: e.target.value})
+import { getMe, deleteTithe, updateUser } from '../utils/API';
 import Auth from '../utils/auth';
 import AddTitheForm from '../components/AddTitheForm';
 
@@ -13,6 +13,8 @@ const SavedTithes = () => {
   // use this to determine if `useEffect()` hook needs to run again
   const userDataLength = Object.keys(userData).length;
   console.log(userData);
+
+
 
   useEffect(() => {
     const getUserData = async () => {
@@ -31,7 +33,9 @@ const SavedTithes = () => {
 
         const user = await response.json(); 
         console.log("FOUND THE USER" + JSON.stringify(user));
+
         setUserData(user);
+
       } catch (err) {
         console.error(err);
       }
@@ -59,6 +63,7 @@ const SavedTithes = () => {
 
       const updatedUser = await response.json();
       setUserData(updatedUser);
+      
     
     } catch (err) {
       console.error(err);
@@ -67,9 +72,52 @@ const SavedTithes = () => {
 
 
   
-  const handleUpdate = () => {
+  const updateAllTithes = (updateTitheObjectFromInput) => {
+
+    setUpdatedTithe(updateTitheObjectFromInput); 
+    userData.tithes = userData.tithes.map(x => {
+      if (x._id == updatedTithe.titheId){
+          x.amount = +updatedTithe.amount; 
+      }
+      return x; 
+      
+  }); 
+  setUserData(userData);
+
+  }; 
+  const handleUpdate = async () => {
     console.log("UPDATING");
     console.log(updatedTithe); 
+    const token = Auth.loggedIn() ? Auth.getToken() : null;
+
+    if (!token) {
+      return false;
+    }
+
+    try {
+      userData.tithes = userData.tithes.map(x => {
+          if (x._id == updatedTithe.titheId){
+              x.amount = +updatedTithe.amount; 
+          }
+          return x; 
+          
+      }); 
+     /// userData.tithes = updatedTithe.tithes;
+      console.log("Latest tithes doubled!");
+      console.log(userData.tithes); 
+      const response = await updateUser(userData, token);
+
+      if (!response.ok) {
+        throw new Error('something went wrong!');
+      }
+
+      const updatedUser = await response.json();
+      setUserData(updatedUser);
+      window.location.reload(); 
+    
+    } catch (err) {
+      console.error(err);
+    }
   };
   // if data isn't here yet, say so
   if (!userDataLength) {
@@ -104,7 +152,7 @@ const SavedTithes = () => {
                   defaultValue={tithe.amount}
                   type='number'
                   size='lg'
-                  onChange = {(e) => setUpdatedTithe({titheId: tithe._id, date: tithe.date, amount: e.target.value})}
+                  onChange = {(e) => updateAllTithes({titheId: tithe._id, date: tithe.date, amount: e.target.value})}
                   placeholder='Search for a donation'>
                   </Form.Control>
                   <Card.Text>Given on: {tithe.date}</Card.Text>

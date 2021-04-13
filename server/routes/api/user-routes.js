@@ -7,7 +7,8 @@ const {
   login,
   saveTithe,
   deleteTithe,
-  updateTithe
+  updateTithe,
+  updateUser
 } = require('../../controllers/user-controller');
 
 // import middleware
@@ -24,6 +25,7 @@ router.route('/books/:bookId').delete(authMiddleware, deleteBook);
 
 router.route('/tithes/:titheId').delete(authMiddleware, deleteTithe);
 router.route('/tithes-update').post(authMiddleware, updateTithe);
+router.route('/update-user').post(authMiddleware, updateUser);
 
 router.route('/tithes').put(authMiddleware, saveTithe);
 

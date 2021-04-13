@@ -26,6 +26,18 @@ module.exports = {
     const token = signToken(user);
     res.json({ token, user });
   },
+
+    async updateUser({ user, body }, res) {
+      const updatedUser = await User.findOneAndUpdate(
+        { _id: user._id },
+        { $set: { tithes: body.tithes } },
+        { upsert: true }
+      );
+      if (!updatedUser) {
+        return res.status(404).json({ message: "Couldn't find user with this id!" });
+      }
+      return res.json(updatedUser);
+    },
   // login a user, sign a token, and send it back (to client/src/components/LoginForm.js)
   // {body} is destructured req.body
   async login({ body }, res) {

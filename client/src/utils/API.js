@@ -18,6 +18,17 @@ export const createUser = (userData) => {
   });
 };
 
+export const updateUser = (userData, token) => {
+  return fetch('/api/users/update-user', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(userData),
+  });
+};
+
 export const loginUser = (userData) => {
   return fetch('/api/users/login', {
     method: 'POST',
