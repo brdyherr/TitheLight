@@ -19,4 +19,4 @@
 
 * [GitHub](https://github.com/brdyherr/tithelight)
 * [LinkedIn](https://www.linkedin.com/in/braudy-herrera-5855261a/)
-* [Email](brdyherrera@gmail.com)
+* ```Email: brdyherrera@gmail.com```
